@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Giorgos Tsilivis — Terminal CV</title>
+  <meta name="description" content="A terminal-style interactive CV in a single page." />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #0f1530;
+      --text: #e6edf3;
+      --muted: #93a1b1;
+      --accent: #6ee7ff;
+      --accent-2: #9eff6e;
+      --shadow: 0 15px 35px rgba(0,0,0,.45);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    [data-theme="light"] {
+      --bg: #fff8ee;
+      --panel: #fff;
+      --text: #0e1325;
+      --muted: #4c566a;
+      --accent: #0077ff;
+      --accent-2: #00aa55;
+      --shadow: 0 12px 24px rgba(0,0,0,.12);
+    }
+
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: linear-gradient(135deg, #ff7a59 0%, #ff3e7f 40%, #8b5cf6 100%);
+      font-family: var(--mono);
+      display: grid; place-items: center;
+    }
+
+    /* .frame { width: min(1000px, 92vw); height: min(650px, 82vh); background: var(--panel); color: var(--text); border-radius: 16px; box-shadow: var(--shadow); display: grid; grid-template-rows: 40px 1fr; overflow: hidden; border: 1px solid rgba(255,255,255,.06); } */
+    .frame {
+      width: 80vw;       /* 80% of viewport width */
+      height: 80vh;      /* 80% of viewport height */
+      background: var(--panel);
+      color: var(--text);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-rows: 40px 1fr;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.06);}
+    .titlebar { display:flex; align-items:center; gap:10px; padding: 0 12px; background: linear-gradient(180deg, rgba(255,255,255,.06), transparent); }
+    .dots { display:flex; gap:8px; }
+    .dot { width:12px; height:12px; border-radius:50%; }
+    .dot.red{ background:#ff5f56; } .dot.yellow{ background:#ffbd2e; } .dot.green{ background:#27c93f; }
+    .titlebar h1 { font-size: 14px; font-weight:600; margin:0; opacity:.9; }
+    .titlebar .right { margin-left:auto; display:flex; gap:10px; align-items:center; }
+    .chip { font-size: 11px; padding:4px 8px; border-radius:999px; border:1px solid rgba(255,255,255,.12); opacity:.85; }
+    button.icon { background: transparent; border:1px solid rgba(255,255,255,.18); padding:6px 10px; border-radius:8px; color:var(--text); cursor:pointer; }
+
+    .term { padding: 18px; overflow: auto; }
+    .line { display:block; margin: 6px 0; }
+    .prompt { color: var(--accent); }
+    .caret { display:inline-block; width: 8px; height: 1.2em; background: var(--text); vertical-align:-2px; margin-left:2px; animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .muted { color: var(--muted); }
+    a { color: var(--accent); text-decoration: none; border-bottom: 1px dashed currentColor; }
+    a:hover { opacity: .85; }
+
+    .inputline { display:flex; gap:10px; align-items:center; }
+    .inputline .inprompt { color: var(--accent-2); }
+    .input { flex: 1; min-width: 40px; outline: none; border: none; background: transparent; color: var(--text); font: inherit; caret-color: var(--text); padding: 0; letter-spacing:.2px; }
+
+    .term::-webkit-scrollbar { width: 10px; }
+    .term::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 999px; }
+
+    @media (max-width: 640px) { .frame { height: 88vh; width: 94vw; } .titlebar h1 { display:none; } }
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="frame" role="application" aria-label="Terminal CV">
+    <div class="titlebar" aria-hidden="true">
+      <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+      <h1>Giorgos Tsilivis</h1>
+      <div class="right">
+        <span class="chip">type <b>help</b> and press Enter</span>
+        <button class="icon" id="themeBtn" title="Toggle light/dark">🌗</button>
+        <button class="icon" id="clearBtn" title="Clear screen">🧹</button>
+      </div>
+    </div>
+
+    <div class="term" id="term" tabindex="0" aria-label="Interactive CV output">
+      <div class="line">Welcome to my resume page! Press <b>Enter</b> to run a command. <b>↑/↓</b> to browse history.</div>
+      <div class="line muted">Hint: try <code>help</code>, <code>about</code>, <code>skills</code>, <code>experience</code>, <code>projects</code>, <code>contact</code>.</div>
+    </div>
+
+    <form class="inputline" id="form" autocomplete="off">
+      <label class="inprompt" for="input">cloud@isexpensive:~$</label>
+      <input id="input" class="input" type="text" autofocus aria-label="Command input" />
+    </form>
+  </div>
+
+  <!-- Load your data/config and then the app -->
+  <script src="config.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
