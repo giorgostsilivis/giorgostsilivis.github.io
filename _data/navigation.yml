@@ -1,9 +1,15 @@
-# _data/navigation.yml
-
 main:
   - title: Home
     url: /
-    icon: fas fa-home   # optional FontAwesome icon
+    icon: fas fa-home
+
+  - title: Blog
+    url: /posts/
+    icon: fas fa-pen-nib
+
+  - title: Projects
+    url: /projects/
+    icon: fas fa-code-branch
 
   - title: Categories
     url: /categories/
@@ -12,10 +18,6 @@ main:
   - title: Tags
     url: /tags/
     icon: fas fa-tags
-
-  - title: Archives
-    url: /archives/
-    icon: fas fa-archive
 
   - title: About
     url: /about/
