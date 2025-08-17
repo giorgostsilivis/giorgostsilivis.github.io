@@ -1,9 +1,10 @@
-title: My Tech Notes
-tagline: "IT, Cybersecurity & Smart Home"
+title: Tech Notes
+tagline: "IT, (Cyber) Security & Smart Home"
 description: >-
-  My personal tech blog powered by Jekyll Chirpy
+  Personal tech blog powered by Jekyll Chirpy
 url: "https://<your-username>.github.io"
-baseurl: ""   # keep empty unless it's a project site
+baseurl: ""   # empty for user site
 author:
   name: Your Name
   avatar: /assets/img/avatar.png
+theme: jekyll-theme-chirpy
