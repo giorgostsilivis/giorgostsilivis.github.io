@@ -3,8 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Giorgos Tsilivis — Terminal CV</title>
-  <meta name="description" content="A terminal-style interactive CV in a single page." />
+  <title>Giorgos Tsilivis — Cloud/DevOps Engineer</title>
+  <meta name="description" content="Giorgos Tsilivis, Cloud/DevOps Engineer in Athens, Greece: Kubernetes, CI/CD, GitOps, AWS and Azure. Interactive terminal CV." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://giorgostsilivis.github.io/" />
+  <meta property="og:title" content="Giorgos Tsilivis — Cloud/DevOps Engineer" />
+  <meta property="og:description" content="Kubernetes, CI/CD, GitOps, AWS and Azure. Interactive terminal CV with a downloadable PDF." />
   <style>
     :root {
       --bg: #0b1020;
@@ -71,16 +75,17 @@
     .term::-webkit-scrollbar { width: 10px; }
     .term::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 999px; }
 
-    @media (max-width: 640px) { .frame { height: 88vh; width: 94vw; } .titlebar h1 { display:none; } }
+    @media (max-width: 640px) { .frame { height: 88vh; width: 94vw; } .titlebar h1, .chip.hint { display:none; } }
   </style>
 </head>
 <body data-theme="dark">
   <div class="frame" role="application" aria-label="Terminal CV">
-    <div class="titlebar" aria-hidden="true">
-      <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+    <div class="titlebar">
+      <div class="dots" aria-hidden="true"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
       <h1>Giorgos Tsilivis</h1>
       <div class="right">
-        <span class="chip">type <b>help</b> and press Enter</span>
+        <span class="chip hint">type <b>help</b> and press Enter</span>
+        <a class="chip" href="resume.pdf" target="_blank" rel="noopener">CV (PDF)</a>
         <button class="icon" id="themeBtn" title="Toggle light/dark">🌗</button>
         <button class="icon" id="clearBtn" title="Clear screen">🧹</button>
       </div>
@@ -88,7 +93,7 @@
 
     <div class="term" id="term" tabindex="0" aria-label="Interactive CV output">
       <div class="line">Welcome to my resume page! Press <b>Enter</b> to run a command. <b>↑/↓</b> to browse history.</div>
-      <div class="line muted">Hint: try <code>help</code>, <code>about</code>, <code>skills</code>, <code>experience</code>, <code>projects</code>, <code>contact</code>.</div>
+      <div class="line muted">Hint: try <code>help</code>, <code>about</code>, <code>skills</code>, <code>experience</code>, <code>education</code>, <code>projects</code>, <code>contact</code>, or <code>cv</code> for the PDF.</div>
     </div>
 
     <form class="inputline" id="form" autocomplete="off">

@@ -7,6 +7,8 @@
     const SKILLS = cfg.skills || {};
     const EXPERIENCE = cfg.experience || [];
     const PROJECTS = cfg.projects || [];
+    const EDUCATION = cfg.education || [];
+    const HOBBIES = cfg.hobbies || [];
   
     const term = document.getElementById('term');
     const input = document.getElementById('input');
@@ -30,7 +32,8 @@
       write(`<span class="prompt">cloud@isexpensive:~$</span> ${escapeHtml(cmd)}`);
     };
   
-    const escapeHtml = (s="") => s.replace(/[&<>\"]/g, (c)=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+    const escapeHtml = (s="") => String(s).replace(/[&<>\"]/g, (c)=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+    const link = (url, text = url) => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(text)}</a>`;
   
     const typeOut = async (text, speed=6) => {
       const el = document.createElement('div');
@@ -59,16 +62,16 @@
     commands('about', async () => {
       const loc = PROFILE.location ? ` | ${PROFILE.location}` : '';
       await typeOut(`${PROFILE.name || 'Giorgos Tsilivis'} — ${PROFILE.title || ''}${loc}`);
-      if (PROFILE.website) write(`Website: <a href="${PROFILE.website}" target="_blank">${PROFILE.website}</a>`);
-      if (PROFILE.github) write(`GitHub: <a href="${PROFILE.github}" target="_blank">${PROFILE.github}</a>`);
-      if (PROFILE.linkedin) write(`LinkedIn: <a href="${PROFILE.linkedin}" target="_blank">${PROFILE.linkedin}</a>`);
+      if (PROFILE.summary) write(escapeHtml(PROFILE.summary));
+      if (PROFILE.website) write(`Website: ${link(PROFILE.website)}`);
+      if (PROFILE.github) write(`GitHub: ${link(PROFILE.github)}`);
+      if (PROFILE.linkedin) write(`LinkedIn: ${link(PROFILE.linkedin)}`);
+      if (PROFILE.x) write(`X: ${link(PROFILE.x)}`);
     }, 'Who am I?');
   
     commands('skills', () => {
-      const block = (label, arr=[]) => write(`<span class="muted">${label}:</span> ${arr.join(', ')}`);
-      block('Languages', SKILLS.languages);
-      block('Frameworks', SKILLS.frameworks);
-      block('Tools', SKILLS.tools);
+      Object.entries(SKILLS).forEach(([label, arr]) =>
+        write(`<span class="muted">${escapeHtml(label)}:</span> ${escapeHtml((arr || []).join(', '))}`));
     }, 'Technical skills');
   
     commands('experience', () => {
@@ -81,15 +84,30 @@
       term.scrollTop = term.scrollHeight;
     }, 'Work history');
   
+    if (EDUCATION.length) commands('education', () => {
+      EDUCATION.forEach(e => {
+        write(`<b>${escapeHtml(e.degree)}</b> — ${escapeHtml(e.school)} <span class="muted">(${escapeHtml(e.period)})</span>`);
+        if (e.note) write(`<span class="muted">${escapeHtml(e.note)}</span>`);
+      });
+    }, 'Degrees');
+
     commands('projects', () => {
-      PROJECTS.forEach(p=>write(`<b>${escapeHtml(p.name)}</b> — ${escapeHtml(p.desc)} · ${p.link ? `<a href="${p.link}" target="_blank">open</a>`:''}`));
+      PROJECTS.forEach(p => {
+        const when = p.period ? ` <span class="muted">(${escapeHtml(p.period)})</span>` : '';
+        const open = p.link ? ` · ${link(p.link, 'open')}` : '';
+        write(`<b>${escapeHtml(p.name)}</b>${when} — ${escapeHtml(p.desc)}${open}`);
+      });
     }, 'Selected projects');
   
     commands('contact', () => {
-      if (PROFILE.email) write(`Email: <a href="mailto:${PROFILE.email}">${PROFILE.email}</a>`);
-      if (PROFILE.linkedin) write(`Say hi on LinkedIn: <a href="${PROFILE.linkedin}" target="_blank">profile</a>`);
+      if (PROFILE.email) write(`Email: <a href="mailto:${escapeHtml(PROFILE.email)}">${escapeHtml(PROFILE.email)}</a>`);
+      if (PROFILE.linkedin) write(`Say hi on LinkedIn: ${link(PROFILE.linkedin, 'profile')}`);
+      if (PROFILE.x) write(`Or on X: ${link(PROFILE.x, '@' + PROFILE.x.split('/').filter(Boolean).pop())}`);
+      if (PROFILE.github) write(`Code on GitHub: ${link(PROFILE.github, PROFILE.github.split('/').filter(Boolean).pop())}`);
     }, 'How to reach me');
   
+    if (HOBBIES.length) commands('hobbies', () => write(escapeHtml(HOBBIES.join(', '))), 'Life outside the terminal');
+
     commands('theme', (arg) => {
       const next = arg?.toLowerCase();
       if (next === 'light' || next === 'dark') {
@@ -107,7 +125,7 @@
   
     commands('cv', () => {
       if (PROFILE.resumePdf) {
-        write(`Opening resume: <a href="${PROFILE.resumePdf}" target="_blank">${PROFILE.resumePdf}</a>`);
+        write(`Opening resume: ${link(PROFILE.resumePdf)}`);
       } else {
         write('No resume linked. Set profile.resumePdf in config.js');
       }
